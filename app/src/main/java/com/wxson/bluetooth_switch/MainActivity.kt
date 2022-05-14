@@ -5,9 +5,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.content.Intent
-import android.os.Build
+import android.os.*
 import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.res.ResourcesCompat
@@ -17,7 +16,9 @@ import com.permissionx.guolindev.PermissionX
 import com.wxson.bluetooth_switch.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
-    lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: MainViewModel
+    private lateinit var handler: Handler
+
     private val resultLauncher = registerForActivityResult(ActivityResultContracts
         .StartActivityForResult()) {
         if (it.resultCode != Activity.RESULT_OK) {  //if the user has rejected the request
@@ -36,6 +37,13 @@ class MainActivity : AppCompatActivity() {
             resultLauncher.launch(Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE))
         }
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        //设备返回信息处理Handler定义
+        handler = object : Handler(Looper.getMainLooper()) {
+            override fun handleMessage(msg: Message) {
+                showMsg(msg.obj as String)
+            }
+        }
+        viewModel.setHandler(handler)
 
         // set adapter
         val deviceAdapter = DeviceAdapter(viewModel.deviceList, viewModel::connectAction)
@@ -70,6 +78,7 @@ class MainActivity : AppCompatActivity() {
             toggleBtn2.setOnCheckedChangeListener { _, isChecked -> viewModel.setSwitch(2, isChecked)}
             toggleBtn3.setOnCheckedChangeListener { _, isChecked -> viewModel.setSwitch(3, isChecked)}
             toggleBtn4.setOnCheckedChangeListener { _, isChecked -> viewModel.setSwitch(4, isChecked)}
+//            btnTest.setOnClickListener { viewModel.sendTestMsg() }
         }
     }
 

@@ -11,4 +11,6 @@
     <string name="on_3">ON-3</string>
     <string name="off_4">OFF-4</string>
     <string name="on_4">ON-4</string>
+    <string name="test">Test</string>
+    <string name="hint">连接和断开时请点击相应设备</string>
 </resources>

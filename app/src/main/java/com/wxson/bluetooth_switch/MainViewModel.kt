@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Handler
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.LiveData
@@ -29,7 +30,7 @@ class MainViewModel : ViewModel() {
     //region variable
     private val tag = this.javaClass.simpleName
     val deviceList: MutableList<BluetoothDevice> = ArrayList()
-    private val bluetoothBean: BluetoothBean
+    private var bluetoothBean: BluetoothBean
 
     private val receiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -38,6 +39,8 @@ class MainViewModel : ViewModel() {
                 when (action) {
                     BluetoothDevice.ACTION_ACL_CONNECTED -> {
                         _isConnectedLiveData.value = true
+//                        if (::bluetoothBean.isInitialized)
+//                            bluetoothBean.startReadThread()
                     }
                     BluetoothDevice.ACTION_ACL_DISCONNECTED -> {
                         _isConnectedLiveData.value = false
@@ -106,7 +109,18 @@ class MainViewModel : ViewModel() {
         val outputByteArray: ByteArray = toByteArray(outputString)
         try {
             bluetoothBean.outputStream?.write(outputByteArray)
-//            outputStream?.write(outputByteArray)
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+    }
+
+    fun setHandler(handler: Handler) {
+        bluetoothBean.setHandler(handler)
+    }
+
+    fun sendTestMsg() {
+        try {
+            bluetoothBean.outputStream?.write(toByteArray("FF"))
         } catch (e: IOException) {
             e.printStackTrace()
         }
