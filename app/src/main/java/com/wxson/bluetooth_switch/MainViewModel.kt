@@ -4,21 +4,15 @@ import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
-import android.bluetooth.BluetoothSocket
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Handler
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
-import java.util.*
 import kotlin.collections.ArrayList
 
 val bluetoothAdapter: BluetoothAdapter = (MyApplication.context
@@ -114,9 +108,9 @@ class MainViewModel : ViewModel() {
         }
     }
 
-    fun setHandler(handler: Handler) {
-        bluetoothBean.setHandler(handler)
-    }
+//    fun setHandler(handler: Handler) {
+//        bluetoothBean.setHandler(handler)
+//    }
 
     fun sendTestMsg() {
         try {

@@ -17,7 +17,7 @@ import com.wxson.bluetooth_switch.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainViewModel
-    private lateinit var handler: Handler
+//    private lateinit var handler: Handler
 
     private val resultLauncher = registerForActivityResult(ActivityResultContracts
         .StartActivityForResult()) {
@@ -38,12 +38,12 @@ class MainActivity : AppCompatActivity() {
         }
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         //设备返回信息处理Handler定义
-        handler = object : Handler(Looper.getMainLooper()) {
-            override fun handleMessage(msg: Message) {
-                showMsg(msg.obj as String)
-            }
-        }
-        viewModel.setHandler(handler)
+//        handler = object : Handler(Looper.getMainLooper()) {
+//            override fun handleMessage(msg: Message) {
+//                showMsg(msg.obj as String)
+//            }
+//        }
+//        viewModel.setHandler(handler)
 
         // set adapter
         val deviceAdapter = DeviceAdapter(viewModel.deviceList, viewModel::connectAction)
